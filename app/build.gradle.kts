@@ -1,16 +1,17 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "org.shop.chat"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "org.shop.chat"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -39,6 +40,16 @@ android {
 }
 
 dependencies {
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    // Firebase Analytics
+    implementation("com.google.firebase:firebase-analytics")
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth-ktx")
+    // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-database-ktx")
+    // Firebase Cloud Messaging
+    implementation("com.google.firebase:firebase-messaging-ktx")
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
