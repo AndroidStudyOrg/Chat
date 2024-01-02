@@ -1,7 +1,8 @@
 package org.shop.chat.chatlist
 
 data class ChatRoomItem(
-    val chatRoomId: String,
-    val otherUserName: String,
-    val lastMessage: String
+    val chatRoomId: String? = null,
+    val lastMessage: String? = null,
+    val otherUserName: String? = null,
+    val otherUserId: String? = null
 )

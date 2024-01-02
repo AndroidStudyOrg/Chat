@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Firebase
-import com.google.firebase.app
 import com.google.firebase.auth.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

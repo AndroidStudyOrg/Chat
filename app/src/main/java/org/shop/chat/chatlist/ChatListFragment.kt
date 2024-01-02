@@ -6,6 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.database
+import org.shop.chat.Key.Companion.DB_CHAT_ROOMS
 import org.shop.chat.databinding.FragmentChatListBinding
 
 class ChatListFragment : Fragment() {
@@ -30,8 +37,21 @@ class ChatListFragment : Fragment() {
             adapter = chatListAdapter
         }
 
-        chatListAdapter.submitList(mutableListOf<ChatRoomItem?>().apply {
-            add(ChatRoomItem("11", "22", "33"))
+        val currentUserId = Firebase.auth.currentUser?.uid ?: return
+        val chatRoomsDB = Firebase.database.reference.child(DB_CHAT_ROOMS).child(currentUserId)
+
+        // 내부 정보가 바뀔 때마다 수신
+        chatRoomsDB.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val chatRoomlist = snapshot.children.map {
+                    it.getValue(ChatRoomItem::class.java)
+                }
+                chatListAdapter.submitList(chatRoomlist)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
         })
     }
 }

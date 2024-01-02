@@ -9,8 +9,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.database.database
+import org.shop.chat.Key.Companion.DB_USERS
 import org.shop.chat.LoginActivity
 import org.shop.chat.databinding.FragmentMyPageBinding
+import org.shop.chat.userlist.UserItem
 
 class MyPageFragment : Fragment() {
     private lateinit var binding: FragmentMyPageBinding
@@ -27,6 +30,16 @@ class MyPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val currentUser = Firebase.auth.currentUser?.uid ?: ""
+        val currentUserDB = Firebase.database.reference.child(DB_USERS).child(currentUser)
+
+        currentUserDB.get().addOnSuccessListener {
+            val currentUserItem = it.getValue(UserItem::class.java) ?: return@addOnSuccessListener
+
+            binding.usernameEditText.setText(currentUserItem.username)
+            binding.descriptionEditText.setText(currentUserItem.description)
+        }
+
         binding.applyButton.setOnClickListener {
             val username = binding.usernameEditText.text.toString()
             val description = binding.descriptionEditText.text.toString()
@@ -36,6 +49,10 @@ class MyPageFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            val user = mutableMapOf<String, Any>()
+            user["username"] = username
+            user["description"] = description
+            currentUserDB.updateChildren(user)
             // TODO 파이어 베이스 realtime database update
         }
 
