@@ -1,5 +1,6 @@
 package org.shop.chat.chatlist
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import org.shop.chat.Key.Companion.DB_CHAT_ROOMS
+import org.shop.chat.chatdetail.ChatActivity
+import org.shop.chat.chatdetail.ChatActivity.Companion.EXTRA_CHAT_ROOM_ID
+import org.shop.chat.chatdetail.ChatActivity.Companion.EXTRA_OTHER_USER_ID
 import org.shop.chat.databinding.FragmentChatListBinding
 
 class ChatListFragment : Fragment() {
@@ -31,7 +35,13 @@ class ChatListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chatListAdapter = ChatListAdapter()
+        chatListAdapter = ChatListAdapter { chatRoomItem ->
+            val intent = Intent(context, ChatActivity::class.java)
+            intent.putExtra(EXTRA_OTHER_USER_ID, chatRoomItem.otherUserId)
+            intent.putExtra(EXTRA_CHAT_ROOM_ID, chatRoomItem.chatRoomId)
+            startActivity(intent)
+        }
+
         binding.chatListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = chatListAdapter
