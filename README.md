@@ -1,7 +1,7 @@
 # Chat
 채팅 앱
-  - Firebase Realtime Database
-  - Firebase Authentication
+  - [Firebase Realtime Database](https://firebase.google.com/docs/database/android/start?hl=ko&authuser=2)
+  - [Firebase Authentication](https://firebase.google.com/docs/auth/android/start?hl=ko&authuser=2)
   - Firebase Cloud Message(FCM)
 
 ## [Firebase](https://firebase.google.com/?hl=ko)
