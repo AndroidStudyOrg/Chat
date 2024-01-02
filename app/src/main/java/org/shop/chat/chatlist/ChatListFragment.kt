@@ -1,4 +1,4 @@
-package org.shop.chat.userlist
+package org.shop.chat.chatlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,32 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.shop.chat.databinding.FragmentUserBinding
+import org.shop.chat.databinding.FragmentChatListBinding
 
-class UserFragment : Fragment() {
-    private lateinit var binding: FragmentUserBinding
-    private lateinit var userAdapter: UserAdapter
+class ChatListFragment : Fragment() {
+    private lateinit var binding: FragmentChatListBinding
+    private lateinit var chatListAdapter: ChatListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUserBinding.inflate(inflater)
+        binding = FragmentChatListBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userAdapter = UserAdapter()
-        binding.userListRecyclerView.apply {
+        chatListAdapter = ChatListAdapter()
+        binding.chatListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = userAdapter
+            adapter = chatListAdapter
         }
 
-        userAdapter.submitList(mutableListOf<UserItem?>().apply {
-            add(UserItem("11", "22", "33"))
+        chatListAdapter.submitList(mutableListOf<ChatRoomItem?>().apply {
+            add(ChatRoomItem("11", "22", "33"))
         })
     }
 }

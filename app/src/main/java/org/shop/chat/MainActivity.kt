@@ -6,12 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import org.shop.chat.chatlist.ChatListFragment
 import org.shop.chat.databinding.ActivityMainBinding
+import org.shop.chat.mypage.MyPageFragment
 import org.shop.chat.userlist.UserFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val userFragment = UserFragment()
+    private val chatListFragment = ChatListFragment()
+    private val myPageFragment = MyPageFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +38,12 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.chatRoomList -> {
+                    replaceFragment(chatListFragment)
                     return@setOnItemSelectedListener true
                 }
 
                 R.id.myPage -> {
+                    replaceFragment(myPageFragment)
                     return@setOnItemSelectedListener true
                 }
 
@@ -46,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        replaceFragment(userFragment)
     }
 
     private fun replaceFragment(fragment: Fragment) {
