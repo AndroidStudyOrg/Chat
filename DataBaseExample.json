@@ -1,5 +1,5 @@
 {
-  "User" : {
+  "Users" : {
     "UserAId" : {
       "userId" : "UserAId",
       "username" : "aaaaa",
@@ -11,7 +11,7 @@
       "description" : "bbbbb"
     }
   },
-  "ChatRoom" : {
+  "ChatRooms" : {
     "UserAId" : {
       "UserBId" : {
         "chatRoomId" : "String",
@@ -35,7 +35,7 @@
       }
     }
   },
-  "Chat" : {
+  "Chats" : {
     "채팅방 아이디1" : {
       "메시지 ID1" : {
         "chatID" : "String",

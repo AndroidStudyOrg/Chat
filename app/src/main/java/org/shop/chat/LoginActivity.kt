@@ -7,6 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.database.database
+import org.shop.chat.Key.Companion.DB_URL
+import org.shop.chat.Key.Companion.DB_USERS
 import org.shop.chat.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -49,8 +52,19 @@ class LoginActivity : AppCompatActivity() {
             }
             Firebase.auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
+                    val currentUser = Firebase.auth.currentUser
+                    if (task.isSuccessful && currentUser != null) {
                         // 로그인 성공
+
+                        val userId = currentUser.uid
+                        val user = mutableMapOf<String, Any>()
+                        user["userId"] = userId
+                        user["username"] = email
+                        // DB가 미국이 아닌 싱가포르 등 다른 나라에 있을 경우 아래의 코드를 추가해주어야 함.
+//                        Firebase.database("https://simplechat-e8a47-default-rtdb.firebaseio.com/")
+                        Firebase.database(DB_URL).reference.child(DB_USERS).child(userId)
+                            .updateChildren(user)
+
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
