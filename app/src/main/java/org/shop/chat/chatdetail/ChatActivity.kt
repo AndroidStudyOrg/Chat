@@ -55,7 +55,7 @@ class ChatActivity : AppCompatActivity() {
                     chatItem ?: return
 
                     chatItemList.add(chatItem)
-                    chatAdapter.submitList(chatItemList)
+                    chatAdapter.submitList(chatItemList.toMutableList())
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
