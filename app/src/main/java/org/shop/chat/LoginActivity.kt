@@ -9,7 +9,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.database
 import com.google.firebase.messaging.messaging
-import org.shop.chat.Key.Companion.DB_URL
 import org.shop.chat.Key.Companion.DB_USERS
 import org.shop.chat.databinding.ActivityLoginBinding
 
@@ -66,8 +65,9 @@ class LoginActivity : AppCompatActivity() {
                             user["username"] = email
                             user["fcmToken"] = token
                             // DB가 미국이 아닌 싱가포르 등 다른 나라에 있을 경우 아래의 코드를 추가해주어야 함.
-//                        Firebase.database("https://simplechat-e8a47-default-rtdb.firebaseio.com/")
-                            Firebase.database(DB_URL).reference.child(DB_USERS).child(userId)
+//                        Firebase.database(getString(R.string.db_url))
+                            Firebase.database(getString(R.string.db_url)).reference.child(DB_USERS)
+                                .child(userId)
                                 .updateChildren(user)
 
                             val intent = Intent(this, MainActivity::class.java)

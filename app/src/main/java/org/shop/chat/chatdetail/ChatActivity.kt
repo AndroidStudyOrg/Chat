@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.database.ChildEventListener
@@ -30,6 +31,7 @@ import java.io.IOException
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private lateinit var chatAdapter: ChatAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     // chatRoomId, otherUserId
     private var chatRoomId: String = ""
@@ -60,10 +62,23 @@ class ChatActivity : AppCompatActivity() {
         }
 
         chatAdapter = ChatAdapter()
+        linearLayoutManager = LinearLayoutManager(applicationContext)
         binding.chatRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = linearLayoutManager
             adapter = chatAdapter
         }
+
+        chatAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+
+                linearLayoutManager.smoothScrollToPosition(
+                    binding.chatRecyclerView,
+                    null,
+                    chatAdapter.itemCount
+                )
+            }
+        })
 
         binding.sendButton.setOnClickListener {
             val message = binding.messageEditText.text.toString()
@@ -109,7 +124,7 @@ class ChatActivity : AppCompatActivity() {
             val requestBody =
                 root.toString().toRequestBody("application/json; charset=UTF-8".toMediaType())
             val request =
-                Request.Builder().post(requestBody).url("https://fcm.googleapis.com/fcm/send")
+                Request.Builder().post(requestBody).url(getString(R.string.fcm_url))
                     .header("Authorization", "key=${getString(R.string.fcm_server_key)}").build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
